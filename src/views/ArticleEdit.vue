@@ -11,7 +11,7 @@
         <el-input v-model="model.title"></el-input>
       </el-form-item>
       <el-form-item label="詳情">
-        <vue-editor v-model="model.content"></vue-editor>
+        <vue-editor useCustomImageHandler @image-added="handleImageAdded" v-model="model.content"></vue-editor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">确认</el-button>
@@ -62,6 +62,13 @@ export default {
     async fetchCates() {
       const res = await this.$http.get(`rest/cate`);
       this.cates = res.data;
+    },
+    async handleImageAdded(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await this.$http.post("upload", formData);
+      Editor.insertEmbed(cursorLocation, "image", res.data.url);
+      resetUploader();
     }
   },
   components: {

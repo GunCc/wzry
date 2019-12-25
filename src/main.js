@@ -9,6 +9,8 @@ import http from './http'
 
 Vue.prototype.$http = http
 
+Vue.mixin({})
+
 new Vue({
   router,
   render: h => h(App)
